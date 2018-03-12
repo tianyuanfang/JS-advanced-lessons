@@ -1,4 +1,4 @@
-//未看demo10、demo12部分、demo14部分、demo15部分
+//未看demo12部分、demo14部分、demo15部分
 console.log(a);//undefined
 if(true)
 {
@@ -162,6 +162,114 @@ console.log(student.name);//Jack
 console.log(student["age"]);//23
 console.log(student.sayHi);//ƒ(){console.log("Hi,i'm",this.name,",i'm",this.age,"years old!");}
 student.sayHi();//Hi,i'm Jack ,i'm 23 years old!
+
+
+//字符串常用方法，字符串的方法源于String.prototype
+var str1 = "aaa".concat("bbb");//返回字符串->aaabbb  
+
+var str2 = "abcdef".slice(2);//cdef
+var str3 = "abcdef".slice(2,5);//cde
+var str4 = "abcdef".slice(-2);//ef
+var str5 = "abcdef".slice(2,-2);//cd
+
+var str6 = "abcdef".split("c");//返回数组->["ab", "def"] 
+var str7 = "abcdef".split("c",1);//["ab"] 
+var str8 = "abcdef".split("c",2);//["ab", "def"] 
+
+var str9 = "abcdef".charAt(2);//c
+
+var str10 = "abcdefabcdef".indexOf("d",1);//3
+var str11 = "abcdefabcdef".indexOf("d",4);//从第4个开始找->9
+
+var str12 = "    abc def     \r\n  ".trim();//abc def
+//返回已移除前导空格、尾随空格和行终止符(转义字符)的原始字符串
+
+//substr 与 substring的区别
+var str13 = "abcdefghijklmn";
+var str14 = str13.substr(2,5);//后一个参数代表长度
+console.log(str13,str14);//str13 未受到破坏->abcdefghijklmn  cdefg
+
+var str15 = str13.substring(2,5);//后一个参数代表第几个end
+console.log(str13,str15);//str13 未受到破坏->abcdefghijklmn  cde
+
+
+//通过字面量创建
+var student = {
+    name:"Jack",
+    age:23,
+    sayHi:function () {
+        console.log("Hi,i'm",this.name,",i'm",this.age,"years old!");
+    }
+};
+console.log(student.name);//Jack
+console.log(student["age"]);//23
+console.log(student.sayHi);
+//ƒ () {
+//       console.log("Hi,i'm",this.name,",i'm",this.age,"years old!");
+//   }
+student.sayHi();//Hi,i'm Jack ,i'm 23 years old!
+
+//添加属性，删除属性
+student.id = 2015015001;
+console.log(student.id);//2015015001
+delete  student.id;
+console.log(student.id);//undefined
+
+//查看对象是否有某个属性 in   for...in   Object.keys()
+console.log("name" in student);//true
+for(var k in student){
+    console.log(k,student[k]);//k:属性   student[k]:属性值
+}
+// name Jack
+// age 23
+// sayHi ƒ () {
+//         console.log("Hi,i'm",this.name,",i'm",this.age,"years old!");
+//     }
+console.log(Object.keys(student));//["name", "age", "sayHi"]
+
+
+var arr2 = ['a','b','c'];
+var arr3 = arr2.slice(1,2);//并不破坏arr2->返回数组
+// var arr3 = arr2.slice(1);//["b","c"]
+console.log(arr2);//['a','b','c'];
+console.log(arr3);//['b'];
+
+
+var arr4 = ['m','n'];
+var pushReturn = arr4.push('o');
+console.log(pushReturn);//push后数组的长度->3
+console.log(arr4);//["m", "n", "o"]
+
+var popReturn =arr4.pop();
+console.log(popReturn);//pop出的元素->o
+console.log(arr4);//["m", "n"]
+
+var arr5 = [1,2,3,4];
+var shiftReturn = arr5.shift();
+console.log(shiftReturn);//shift移除的元素->1
+console.log(arr5);//[2,3,4]
+
+var unshiftReturn = arr5.unshift(0);
+//unshift()方法可向数组的开头添加一个或更多元素，并返回新的长度。
+console.log(unshiftReturn);//unshift后数组的长度->4
+console.log(arr5);//[0,2,3,4]
+
+var joinReturn1 = arr6.join();
+console.log(joinReturn1);//ab,cd,ef
+
+var arr7 = ["x","y","z"];
+var arr8 = arr7.splice(1,1,"m");
+console.log(arr7,arr8);//["x", "m", "z"] ["y"]
+/*splice(index,howmany,item1,...,itemX) 方法
+向/从数组中添加/删除项目，然后返回被删除的项目。*/
+//index 必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
+//howmany 必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+//item1, ..., itemX   可选。向数组添加的新项目。
+
+
+
+
+
 
 
 
