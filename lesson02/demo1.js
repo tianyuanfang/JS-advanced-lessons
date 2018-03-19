@@ -153,7 +153,7 @@ console.log(String(true));//true
 console.log(String(false));//false
 console.log(String(0));//0
 console.log(String(234));//234
-console.log(String({x:1,y:2}));//[object object]
+console.log(String({x:1,y:2}));//[object Object]
 
 
 //比较运算符 与 隐式类型转换
