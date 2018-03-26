@@ -177,6 +177,8 @@ fish.swim.call(me,3,4);//i'm ABC i cam swim ___ 3 4
 bird.fly.apply(me,[7,8]);//i'm:ABC i can fly ___ 7 8
 fish.swim(1,2);//i'm fish i cam swim ___ 1 2
 fish.swim.call(null,1,2);//i'm 全局 i cam swim ___ 1 2
+fish.swim.call(undefined,1,2);//i'm 全局 i cam swim ___ 1 2
+
 
 
 function test() {
