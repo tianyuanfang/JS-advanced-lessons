@@ -1,4 +1,4 @@
- function foo(){}
+function foo(){}
 console.log(foo); //ƒ foo(){}
 console.log(typeof foo); //function
 console.log(foo instanceof Object); //true
