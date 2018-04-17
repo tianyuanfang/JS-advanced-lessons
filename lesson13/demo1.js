@@ -237,16 +237,16 @@ for(var i=1;i<6;i++)
 //思考obj3 和 obj4 内容是什么？为什么？
 var obj3 = {};
 for(var i=0;i<10;i++){
-	obj3.i = i;
-	console.log(obj3.i);//0 1 2 3 4 5 6 7 8 9 
+	obj3.i = i;//为obj3添加属性i
+	console.log(obj3.i);//值改变：0->1->2->3->4->5->6->7->8->9 
 }//obj3.i=9
 //i=9时,obj3.i=9;
 //i=10时，跳出循环
 
 var obj4 = {};
 for(var i=0;i<10;i++){
-	obj4[i] = i;
-	console.log(obj4[i]);//0 1 2 3 4 5 6 7 8 9 
+	obj4[i] = i;//数组
+	console.log(obj4[i]);//下标0-9对应值：0 1 2 3 4 5 6 7 8 9 
 }//obj4[i]=9
 //i=9时,obj4[i]=9;
 //i=10时，跳出循环
