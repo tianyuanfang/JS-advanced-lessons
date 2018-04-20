@@ -542,10 +542,12 @@ console.log(Object.isFrozen(str));//true
         Object.freeze(o);//首先冻结第一层对象
         for(propKey in o){
             prop = o[propKey];
-            if(!o.hasOwnProperty(propKey) || !(typeof prop === "object") || Object.isFrozen(prop)){
+            if(!o.hasOwnProperty(propKey) || !(typeof prop === "object")
+             || Object.isFrozen(prop)){
                 continue;
-            }//不是自身属性||不是对象类型->跳出本次循环，进入下一次循环
+            }//不是自身属性||不是对象类型||冻结->跳出本次循环，进入下一次循环
             deepFreeze(prop);//递归
+            //->是自身属性||是对象类型||不冻结
         }
     }
     deepFreeze(obj);
