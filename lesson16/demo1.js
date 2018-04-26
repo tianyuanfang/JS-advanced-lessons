@@ -1,12 +1,15 @@
-var a = 10;b = "Hi";
+var a = 10,b = "Hi";
 function thisTest2(){
     console.log(this);//window
     this.a = 20;//修改a的值
-    delete this.b;
+    delete this.b;//静默失败->b不可配置，即不可删除
     this.c = "新添加属性";//在window下添加属性c
 }
 thisTest2();
 console.log(a,c);//20 "新添加属性"
+Object.getOwnPropertyDescriptor(window,"b");
+//{value: "Hi", writable: true, enumerable: true, configurable: false}
+b;//Hi
 
 
 //严格模式下this为undefined，非严格模式下this为window
