@@ -279,6 +279,21 @@ arr1.forEach(function (a) {
 // 8 "大于3"
 console.log(arr1);//(3) [2, 5, 8]
 
+var arr1=[2,5,8];
+var arr2=[1,6,7];
+arr1.forEach(function(a,i){
+	console.log(a,i,this);
+},arr2);
+// 2 0 (3) [1, 6, 7]
+// 5 1 (3) [1, 6, 7]
+// 8 2 (3) [1, 6, 7]
+var arr3=[];
+var arr2=[1,6,7];
+arr1.forEach(function(a,i){
+	arr3[i]=a>arr2[i]?a:arr2[i];
+},arr2);
+arr3;//(3) [2, 6, 8]
+
 // Array.prototype.every(callback,thisValue?) 
 //返回一个布尔类型 若有不满足的将不再进行后续判断直接返回false
 var arr2= [2,5,8];//[2,4,6]
@@ -350,7 +365,7 @@ console.log(arr3.reduceRight(add));//14
 //综合实例
 //arr.reduce(callback[, initialValue])
 //initialValue可选:用作第一个调用 callback的第一个参数的值。如果没有提供
-//初始值，则将使用数组中的第一个元素。在没有初始值的空数组上调用 reduce 将报错。
+//初始值，则将使用数组中的第一个元素。在没有初始值的空数组上调用 reduce 将报错
 function printArgs(prev,cur,i) {//i为cur下标值
     console.log("prev",prev,",cur:",cur,",i:",i);
     return prev+cur;
