@@ -69,9 +69,9 @@ var sohuArray = [];
 var sinaArray = [];
 var qqArray = [];
 var otherArray = [];
-var reg1=/.{0,}@sohu(.\w{1,}){1,}/i;
-var reg2=/.{0,}@sina(.\w{1,}){1,}/i;
-var reg3=/.{0,}@qq(.\w{1,}){1,}/i;
+var reg1=/.{1,}@sohu(.\w{1,}){1,}/i;
+var reg2=/.{1,}@sina(.\w{1,}){1,}/i;
+var reg3=/.{1,}@qq(.\w{1,}){1,}/i;
 for(var i in emails)
 {
     if(reg1.test(emails[i]))
