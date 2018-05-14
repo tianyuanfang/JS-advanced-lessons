@@ -60,8 +60,17 @@ while (reg2.test("abc23def")){
 
 //如果 exec() 找到了匹配的文本，则返回一个结果数组。否则，返回 null。
 //此数组的第 0 个元素是与正则表达式相匹配的文本，第 1 个元素是与 RegExpObject
-//的第 1 个子表达式相匹配的文本（如果有的话），第 2 个元素是与 RegExpObject 
-//的第 2 个子表达式相匹配的文本（如果有的话），以此类推。
+//的第 1 个分组相匹配的文本（如果有的话），第 2 个元素是与 RegExpObject 
+//的第 2 个分组相匹配的文本（如果有的话），以此类推。
+var execExp = /\d{1,2}(\d)(\d)/;
+var retExp = execExp.exec("12s342dsfsf233s");
+console.log(retExp instanceof Array,retExp,execExp.lastIndex);
+console.log(retExp instanceof Array,retExp,execExp.lastIndex);
+// true  (3) ["342", "4", "2", index: 3, input: "12s342dsfsf233s", 
+//groups: undefined]  0  ->"4","2"是分组
+// true (3) ["342", "4", "2", index: 3, input: "12s342dsfsf233s", 
+//groups: undefined] 0   ->"4","2"是分组
+
 var reg3 = /\w/gi;
 var str = "slfls3r3sfsf";
 var returnArray1 = reg3.exec(str);
