@@ -185,7 +185,7 @@ var arr4 = ["c","d"];
 Array.prototype.push.apply(arr3,arr4);
 console.log(arr3);//(4) ["a", "b", "c", "d"]
 
-//splice(saart,deleteCount?,elememt?)
+//splice(start,deleteCount?,elememt?)
 //splice 从start开始，移除deleteCount个元素，并插入给定的元素
 var arr5 = ["a","b","c","d"];
 var spliceElements = arr5.splice(1,2,"x");//返回切掉的数组

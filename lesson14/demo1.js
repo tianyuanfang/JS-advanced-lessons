@@ -214,6 +214,8 @@ console.log(o1.x);//12
 
 var o2 = Object.create(o1);
 o2.x = 56;//o2继承了o1的x,x不可写
+// 如果o1的x属性可写的话，是能给o2添加x属性。
+// 但是，现在o1的x属性不可写，那么根据继承性，o2无法添加新的x属性。
 console.log(o2.x);//12
 //若o1的x的writable特性为true又会如何？->56
 
