@@ -37,7 +37,7 @@ window.onload = function(e) {
 */
 
 //Part22222 事件流-阻止冒泡-阻止默认响应
-/*
+
 window.onload = function(e) {
     var div1 = document.getElementById("div1");
     var div2 = document.getElementById("div2");
@@ -46,12 +46,13 @@ window.onload = function(e) {
         console.log("div1 click--red");
         console.log("target:", e.target);
         console.log("this:", this);
+        e.stopPropagation(); //阻止事件冒泡
+        e.preventDefault(); //阻止默认响应
         console.log(e.bubbles, e.cancelable, e.cancelBubble);
         //bubbles:如果事件是起泡类型，则返回 true，否则返回 fasle
-        //cancelable :如果用 preventDefault() 方法可以取消与事件关联的
+        //cancelable :如果用 preventDefault()方法可以取消与事件关联的
         //默认动作，则为 true，否则为 fasle
-        //cancelBubble:阻止浏览器默认的事件冒泡行为
-        //e.stopPropagation()：阻止事件冒泡
+        //cancelBubble:阻止浏览器默认的事件冒泡行为        
     }, false); //改成true会怎样
 
     div2.addEventListener("click", function(e) {
@@ -93,7 +94,7 @@ window.onload = function(e) {
     // div1 click--red
     // target: <div id = ​"div3" hidden></div>​
     // this: <div id = ​"div1"></div>​
-    // true true false
+    // true true true
     // body click
     // document click
     // window click
@@ -105,4 +106,3 @@ window.onload = function(e) {
         console.log("阻止跳转百度");
     });
 }
-*/
