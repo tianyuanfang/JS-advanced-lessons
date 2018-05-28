@@ -2,14 +2,17 @@
 //Part11111 事件流
 //捕获从window-document-body-div-(text)
 //冒泡相反
-/*
+
 window.onload = function(e) {
     var div1 = document.getElementById("div1");
     var div2 = document.getElementById("div2");
-
+    // b 1 2 d->t t t/f f
+    // d b 2 1->t t f f 
+    // b 2 1 d->t f f f
     div1.addEventListener("click", function(e) {
         console.log("div1 click");
-    }, false); //第3个参数可以不写，默认为false：冒泡
+        //e.stopPropagation();
+    }, true); //第3个参数可以不写，默认为false：冒泡
 
     div2.addEventListener("click", function(e) {
         console.log("div2 click");
@@ -22,18 +25,18 @@ window.onload = function(e) {
 
     document.body.addEventListener("click", function(e) {
         console.log("body click");
-    }, false); //若第3个可选参数为true的话会怎样，理解冒泡和捕获的顺序
+    }, true); //若第3个可选参数为true的话会怎样，理解冒泡和捕获的顺序
 
-    window.addEventListener("click", function(e) {
-        console.log("window click");
-    }, false);
+    // window.addEventListener("click", function(e) {
+    //     console.log("window click");
+    // }, false);
     //div2 click
     //div1 click
     //body click
     //document click
-    //window click
+    //window click    
 }
-*/
+
 
 /*
 //测试3 DOM2级事件处理

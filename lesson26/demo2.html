@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+</head>
+
+<body>
+    <!-- <button id="btnId0" style="height:20px"></button> 
+    <button id="btnId1" style="height:20px"></button> 
+    <button id="btnId2" style="height:20px"></button> 
+    <button id="btnId3" style="height:20px"></button> 
+    <button id="btnId4" style="height:20px"></button> -->
+</body>
+<script>
+    for (var i = 0; i < 5; i++) {
+        var btn = document.createElement("button");
+        btn.setAttribute("id", "btnId" + i);
+        btn.setAttribute("style", "width:200px");
+        btn.setAttribute("style", "height:20px");
+        document.body.appendChild(btn);
+        console.log(btn);
+    }
+    //思考异步 与 变量共享的问题 ES5如何用IIFE来解决共享问题
+    //异步要用立即执行表达式括起来
+    for (var i = 0; i < 5; i++) {
+        (function(i) {
+            document.getElementById("btnId" + i).addEventListener("click",
+                function() {
+                    document.bgColor = "#" + i * 2 + i * 2 + i * 2 + i * 2 + "00";
+                    console.log("#" + i * 2 + i * 2 + i * 2 + i * 2 + "00");
+                });
+        })(i);
+    }
+    // #000000
+    // #222200
+    // #444400
+    // #666600
+    // #888800
+</script>
+
+</html>
