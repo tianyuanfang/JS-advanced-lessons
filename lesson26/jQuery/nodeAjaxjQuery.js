@@ -7,13 +7,12 @@ http.createServer(function(req, res) {
     //console.log(getDataObj);
     var arrayIndex = getDataObj.id - 1;
     //console.log(typeof arrayIndex,arrayIndex);
-    fs.readFile("./NodeJsonTest.json", function readData(err, data) {
+    fs.readFile("./nodeAjaxjQuery.json", function readData(err, data) {
         var jsonArr = JSON.parse(data);
         //console.log("jsonArr:",jsonArr[arrayIndex]);
 
-        //res.writeHead(200, {"Content-Type": "text/plain",
         res.writeHead(200, {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", //"Content-Type": "text/plain",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST"
         });
@@ -26,7 +25,7 @@ console.log("start server!");
 
 
 /*
-var readableStream = fs.createReadStream("./NoseJsonTest.txt");
+var readableStream = fs.createReadStream("./nodeAjaxjQuery.txt");
 var data = "";
 readableStream.on("data", function(chunk){
     data += chunk;

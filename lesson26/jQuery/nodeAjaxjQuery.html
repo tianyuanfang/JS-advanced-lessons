@@ -4,15 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>JSON-Node-测试</title>
-    <!-- <style>
-        ul, li {
-            list-style: none;
-        }
-        ul {
-            width: 800px;
-            margin: 0 auto;
-        }
-    </style> -->
     <script src="jquery-2.2.2.js"></script>
 </head>
 
@@ -28,23 +19,26 @@
         //        dataType:返回的数据类型，一般的值为--json/jsonp
         //        success:成功后的回调函数
         //        $.ajax({});
-        //   后端代码参见NodeJsonTest
         $('#btn').click(function() {
-            $.ajax({
-                url: 'http://127.0.0.1:8080?getInfo=' + ($('#inp').val() || 1),
-                dataType: 'JSON',
-                type: 'GET',
-                success: function(data) {
-                    if (data) {
-                        console.log(typeof data, data);
-                        document.getElementById("lab").innerText = JSON.stringify(data);
+                $.ajax({
+                    url: 'http://localhost:8080?id=' + ($('#inp').val() || 1),
+                    dataType: 'JSON',
+                    type: 'GET',
+                    success: function(data) {
+                        if (data) {
+                            console.log(typeof data, data);
+                            document.getElementById("lab").innerText = JSON.stringify(data);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error:' + JSON.stringify(xhr));
                     }
-                },
-                error: function(xhr) {
-                    alert('error:' + JSON.stringify(xhr));
-                }
+                })
             })
-        })
+            //输入5
+            //{"index":"555555","id":"2010015005","name":"eeeee","score":"72"}
+            //输入1~7以外的
+            //Error:{"readyState":4,"responseText":"","status":200,"statusText":"OK"}
     </script>
 </body>
 
