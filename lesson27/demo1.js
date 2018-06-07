@@ -85,7 +85,7 @@ const a = []; //a指向一个空数组
 a.push(123, 234); //可以
 a.length = 1; //可以
 a = "str"; //报错
-//因为a是const，其元素或属性可改，但其引用不能修改
+//因为a是const常量，其元素或属性可改，但其引用不能修改
 //类似于 const指针
 
 
@@ -124,7 +124,55 @@ f(); //undefined
 // f();
 
 
-//let和const不存在变量提升
+// let和const的暂时性死区特性
+// 只要块级作用域内存在let，它所声明的变量就“绑定”在这个区域，不再受外部影响
+// let对这个块从一开始就形成了封闭的作用域，凡是在声明之前使用该变量，就会报错
+// let和const不存在变量提升
 console.log(a); //报错
 let a = 2;
-console.log(a);
+
+
+let temp = new Date();
+
+function f() {
+    console.log(temp);
+    if (false) {
+        let temp = "Hi!"; //let在if中形成了暂时性死区
+    }
+}
+f(); //Thu Jun 07 2018 08:12:51 GMT+0800 (中国标准时间)
+
+
+var temp = new Date();
+
+function f() {
+    console.log(temp);
+    let temp = "Hi!"; //let在f()中形成了块级暂时性死区，必须先定义后使用  
+}
+f(); //报错
+
+
+typeof b; //报错 ReferenceError 需要使用前定义
+let b; //若没有此行，上一行->undefiend
+
+var tmp = 123;
+if (true) {
+    tmp = "abc"; //报错 ReferenceError 需要使用前定义
+    let tmp;
+}
+
+//let const不能重复声明
+let abc;
+let abc; //报错
+
+function foo1() {
+    let x;
+    var x;
+}
+foo1(); //报错 重复定义
+
+function foo2() {
+    let x;
+    let x;
+}
+foo2(); //报错 重复定义
