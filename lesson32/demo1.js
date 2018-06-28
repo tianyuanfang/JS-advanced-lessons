@@ -132,20 +132,20 @@ var p3 = new Point(4, 2);
 p3.printName(); // "Oops"
 
 
-// class A{
-//     constructor(x){
-//         this.x = x;
-//     }
-// }
-// class B extends A{
-//     constructor(x,y){
-//         //this.y = y;//先写这句话，会报错
-//         var tt = super(x);
-//         console.log(tt.constructor,tt);
-//         this.y = y;
-//     }
-// }
-// var b = new B(1,2);
+class A {
+    constructor(x) {
+        this.x = x;
+    }
+}
+class B extends A {
+    constructor(x, y) {
+        //this.y = y;//先写这句话，会报错->没调用super方法则生不成对象
+        var tt = super(x);
+        console.log(tt.constructor, tt); //class B extends A{...}  B {x: 1}
+        this.y = y;
+    }
+}
+var b = new B(1, 2);
 
 
 class Polygon {
@@ -158,45 +158,41 @@ class Polygon {
         console.log('Hi, I am a ', this.name + '.');
     }
 }
+class Square extends Polygon {
+    constructor(length) {
+        //this.height;// ReferenceError->super 需要先被调用！
+        var s = super(length, length);
+        console.log(s); //Square {name: "Polygon", height: 2, width: 2}
+        /*
+            注意: 在派生的类中, 在你可以使用'this'之前, 必须先调用super()。
+            忽略这, 这将导致引用错误。
+        */
+        this.name = 'Square';
+        console.log(s); //Square {name: "Square", height: 2, width: 2}
+    }
+    get area() {
+        return this.height * this.width;
+    }
+    set area(value) {
+        this.area = value;
+    }
+}
+var s = new Square(2);
 
 
-// class Square extends Polygon {
-//     constructor(length) {
-//         //this.height;// ReferenceError，super 需要先被调用！
-
-//         /*
-//            这里，它调用父类的构造函数的 length,
-//            作为Polygon 的 width和 height.
-//         */
-//         super(length, length);
-
-//         /*
-//             注意: 在派生的类中, 在你可以使用'this'之前, 必须先调用super()。
-//             忽略这, 这将导致引用错误。
-//         */
-//         this.name = 'Square';
-//     }
-//     get area() {
-//         return this.height * this.width;
-//     }
-//     // set area(value) {
-//     //     this.area = value;
-//     // }
-// }
-
-
-// var obj1 = {
-//     method1() {
-//         console.log("method 1");
-//     }
-// }
-// var obj2 = {
-//     method2() {
-//         super.method1();
-//     }
-// }
-// Object.setPrototypeOf(obj2, obj1);
-// obj2.method2(); // logs "method 1"
+var obj1 = {
+    method1() {
+        console.log("method 1");
+    }
+}
+var obj2 = {
+    method2() {
+        super.method1();
+        //super当做对象时，在原型方法中，指向父类的prototype属性；在静态方法中，指向父类
+    }
+}
+Object.setPrototypeOf(obj2, obj1); //obj2的父类是obj1
+obj2.method2(); //method 1
 
 
 //demo03
@@ -282,3 +278,208 @@ class Rectangle {
     }
 }
 var obj = new Rectangle(3, 4); // 输出 true
+
+
+//demo04
+//Part11111111111111111111111111111111111111111111111
+//类的prototype属性相当于实例的原型，所有在类中定义的方法，都会被实例继承。
+//如果在一个方法前，加上static关键字，
+//就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。
+class Foo {
+    static classMethod() {
+        return 'hello';
+    }
+}
+Foo.classMethod(); // 'hello'
+var foo = new Foo();
+foo.classMethod(); // TypeError: foo.classMethod is not a function
+// 上面代码中，Foo类的classMethod方法前有static关键字，表明该方法是一个静态方法，
+// 可以直接在Foo类上调用（Foo.classMethod()），而不是在Foo类的实例上调用。
+// 如果在实例上调用静态方法，会抛出一个错误，表示不存在该方法
+// 注意，如果静态方法包含this关键字，这个this指的是类，而不是实例。
+
+
+class Foo {
+    static bar() {
+        this.baz();
+    }
+    static baz() {
+        console.log('hello');
+    }
+    baz() {
+        console.log('world');
+    }
+}
+Foo.bar(); // hello
+// 上面代码中，静态方法bar调用了this.baz，这里的this指的是Foo类，
+// 而不是Foo的实例，等同于调用Foo.baz。
+// 另外，从这个例子还可以看出，静态方法可以与非静态方法重名。
+
+
+//思考下边的例子
+class Foo {
+    static baz() {
+        console.log('hello');
+    }
+    baz() {
+        console.log('world');
+        Foo.baz();
+    }
+    static fun1(o) {
+        // this.fun2();//报错
+        o.fun2();
+    }
+    fun2() {
+        console.log("fun2")
+    }
+}
+var a = new Foo();
+a.baz(); //world hello
+Foo.fun1(a); //fun2
+
+
+//demo05
+//静态属性指的是 Class 本身的属性，即Class.propName，而不是定义在实例对象（this）上的属性。
+class Foo {}
+Foo.prop = 1;
+Foo.prop; // 1
+//上面的写法为Foo类定义了一个静态属性prop。
+//目前，只有这种写法可行，因为 ES6 明确规定，Class 内部只有静态方法，没有静态属性。
+
+/*
+// 以下两种写法都无效
+class Foo {
+    // 写法一
+    prop: 2;
+    // 写法二
+    static prop: 2;
+}
+Foo.prop // undefined
+*/
+
+//目前有一个静态属性的提案，对实例属性和静态属性都规定了新的写法
+class MyClass {
+    static myStaticProp = 42;
+    constructor() {
+        console.log(MyClass.myStaticProp); // 42
+    }
+}
+// 同样的，这个新写法大大方便了静态属性的表达，ES6暂不支持
+
+// 老写法
+class Foo {
+    // ...
+}
+Foo.prop = 1;
+// 上面代码中，老写法的静态属性定义在类的外部。整个类生成以后，再生成静态属性。
+// 这样让人很容易忽略这个静态属性，也不符合相关代码应该放在一起的代码组织原则。
+// 另外，新写法是显式声明（declarative），而不是赋值处理，语义更好
+
+
+//demo06
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+class ColorPoint extends Point {
+    constructor(x, y, color) {
+        super(x, y); // 调用父类的constructor(x, y)，如果没有调用super将报错
+        this.color = color;
+    }
+    show() {
+        console.log(this.x, this.y, this.color);
+    }
+}
+var cp = new ColorPoint(1, 2, 3);
+cp.show(); //true
+console.log(cp instanceof ColorPoint); // true
+console.log(cp instanceof Point); // true
+
+//类-类原型链、对象-对象原型链
+console.log(Object.getPrototypeOf(ColorPoint) === Point); //true
+console.log(ColorPoint.__proto__ === Point); //true
+console.log(cp.__proto__ === ColorPoint.prototype); //true
+console.log(cp.__proto__.__proto__ === Point.prototype); //true
+console.log(ColorPoint.__proto__.__proto__ === Function.prototype); //true
+
+// 子类必须在constructor方法中调用super方法，否则新建实例时会报错。
+// 这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工。
+// 如果不调用super方法，子类就得不到this对象
+
+// ES5的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面
+// Parent.call(this)。
+// ES6的继承机制完全不同，必须先调用super方法， 然后再用子类的构造函数修改this。
+
+// 如果子类没有定义constructor方法，这个方法会被默认添加，代码如下。
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+class ColorPoint extends Point {
+
+}
+var cp = new ColorPoint();
+cp; //ColorPoint {x: undefined, y: undefined}
+// 也就是说，不管有没有显式定义，任何一个子类都有constructor方法
+
+// 另一个需要注意的地方是，在子类的构造函数中，只有调用super之后，
+// 才可以使用this关键字，否则会报错。
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+class ColorPoint extends Point {
+    constructor(x, y, color) {
+        //this.color = color; // ReferenceError 报错因为没有调用父类构造函数，没有实例
+        super(x, y);
+        this.color = color; // 正确
+    }
+}
+
+
+// 关于静态方法的继承，父类的静态方法，可以被子类继承。
+class Foo {
+    static classMethod() {
+        return 'hello';
+    }
+}
+class Bar extends Foo {}
+Bar.classMethod(); // 'hello'
+// 上面代码中，父类Foo有一个静态方法，子类Bar可以调用这个方法。
+
+// 静态方法也是可以从super对象上调用的。
+class Foo {
+    static classMethod() {
+        return 'hello';
+    }
+}
+class Bar extends Foo {
+    static classMethod() {
+        return super.classMethod() + ', too'; //此时的super指代父类
+    }
+}
+Bar.classMethod(); // "hello, too"
+
+
+//静态方法的继承的案例
+class Human {
+    constructor() {}
+    static ping() {
+        return 'ping';
+    }
+}
+class Computer extends Human {
+    constructor() {
+        super(); //super此处指代父类构造函数
+    }
+    static pingpong() {
+        return super.ping() + ' pong'; //super此处指代父类
+    }
+}
+Computer.pingpong(); // 'ping pong'
