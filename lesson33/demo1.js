@@ -72,7 +72,7 @@ function timeout(ms) {
     return new Promise((resolve, reject) => {
         setTimeout(resolve, ms, 'done');
         //注意：一旦状态改变，就不会再变状态，就凝固了，不会再变了
-        setTimeout(reject, ms + 500, 'failed'); //思考：会转换为reject状态么->会
+        setTimeout(reject, ms + 500, 'failed'); //思考：会转换为reject状态么->不会
     });
 }
 timeout(1000).then(
@@ -87,7 +87,6 @@ timeout(1000).then(
 
 
 //补充案例
-// var p = new Promise((a,b)=>{
 new Promise((a, b) => {
     setTimeout(a, 1000, "x"); //setTimeout(b,1000,"x");
 }).then(
@@ -173,12 +172,12 @@ p.then(function(v1) {
         console.log("66", v2);
     }, function(e2) {
         console.log("77", e2);
-    })
-    //11
-    //33
-    //55 22
-    //Promise {<pending>}
-    //77 55
+    });
+//11
+//33
+//55 22
+//Promise {<pending>}
+//77 55
 
 
 //补充案例
@@ -227,3 +226,224 @@ p.then((v) => {
 // Promise {<pending>}
 // x: hi
 // hi:xx
+
+
+//demo03
+//Promise的原型方法，Promise.prototype.catch
+//基本案例
+var p1 = new Promise((resolve, reject) => {
+    console.log(111);
+    //resolve(222);
+    reject(222);
+    console.log(333);
+});
+p1.then(
+        () => { console.log('this is success callback') }
+    ).catch(
+        (err) => { console.log(err) }
+    )
+    // 111
+    // 333
+    // 222
+    // Promise {<resolved>: undefined}
+
+//注意：避免then中的rejected回调和catch同时使用
+// 一般的写法
+var p2 = new Promise((resolve, reject) => {
+    console.log(111);
+    //resolve(222);
+    reject(new Error("222"));
+    console.log(333);
+});
+p2
+    .then(() => { console.log('444'); })
+    .then(() => { console.log("555"); })
+    .catch((err) => { console.log("666", err); });
+//111
+//333
+//666 Error: 222
+//     at Promise (<anonymous>:4:12)
+//     at new Promise (<anonymous>)
+//     at <anonymous>:1:10
+//     Promise {<resolved>: undefined}
+
+
+//Promise的原型方法，Promise.prototype.finally
+var p2 = new Promise((resolve, reject) => {
+    console.log(111);
+    resolve(222); //无论resovle还是rejected，finally都会执行
+    reject(new Error("222")); //无论resovle还是rejected，finally都会执行
+    console.log(333);
+});
+p2
+    .then(() => { console.log('444') })
+    .then(() => { console.log("555"); })
+    .catch((err) => { console.log("666", err); })
+    .finally(() => { console.log("finally") });
+// 111
+// 333
+// 444
+// 555
+// finally
+// Promise {<resolved>: undefined}
+
+
+//////其他案例///////
+//catch
+//11111
+var p = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "hi");
+});
+p.then((v) => {
+        console.log("x:", v);
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 2000, new Error("xx"));
+        })
+    }).then(v => console.log(v), e => console.log("yy:", e))
+    //}).then(v=>console.log(v))//将上面一行改成此行试试
+    //}).then(v=>console.log(v)).then(v=>console.log(v))//要是改成这样会又会怎样？
+    .catch((e) => console.log("zz:", e));
+// Promise {<pending>}
+// x: hi
+// yy: Error: xx
+//     at Promise (<anonymous>:7:38)
+//     at new Promise (<anonymous>)
+//     at p.then (<anonymous>:6:16)
+
+//22222
+var p = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "hi");
+});
+p.then((v) => {
+        console.log("x:", v);
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 2000, new Error("xx"));
+        })
+    }).then(v => console.log(v))
+    //}).then(v=>console.log(v)).then(v=>console.log(v))//要是改成这样会又会怎样？
+    .catch((e) => console.log("zz:", e));
+// Promise {<pending>}
+// x: hi
+// zz: Error: xx
+//     at Promise (<anonymous>:7:38)
+//     at new Promise (<anonymous>)
+//     at p.then (<anonymous>:6:16)
+
+//33333
+var p = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "hi");
+});
+p.then((v) => {
+        console.log("x:", v);
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 2000, new Error("xx"));
+        })
+    }).then(v => console.log(v)).then(v => console.log(v))
+    .catch((e) => console.log("zz:", e));
+// Promise {<pending>}
+// x: hi
+// zz: Error: xx
+//     at Promise (<anonymous>:7:38)
+//     at new Promise (<anonymous>)
+//     at p.then (<anonymous>:6:16)
+
+// finally
+var p = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "hi");
+});
+p.then((v) => {
+        console.log("x:", v);
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 2000, new Error("xx"));
+        })
+    }).then(v => console.log(v), e => console.log("yy:", e))
+    .catch(e => console.log("zz:", e))
+    .finally(f => console.log("finally"));
+// Promise {<pending>}
+// x: hi
+// yy: Error: xx
+//     at Promise (<anonymous>:7:38)
+//     at new Promise (<anonymous>)
+//     at p.then (<anonymous>:6:16)
+// finally
+
+
+//demo04
+//Promise静态方法 Promise.resolve
+//Promise.resolve参数3种情况
+//Promise.resolve(value);->返回的Promise对象状态为fulfilled(例外：错误对象)，
+//并且将该value传递给对应的then方法
+//Promise.resolve(promise);->直接返回这个Promise对象
+//Promise.resolve(thenable);->返回的Promise对象的最终状态由then方法执行决定
+Promise.resolve("Success").then(function(value) {
+    console.log(value);
+}, function(value) {});
+// Success
+// Promise {<resolved>: undefined}
+
+var promise1 = Promise.resolve([1, 2, 3]);
+promise1.then(function(value) {
+    console.log(value);
+});
+// (3) [1, 2, 3]
+// Promise {<resolved>: undefined}
+
+Promise.resolve(new Promise((resolve, reject) => {
+    setTimeout(reject, 2000, "bbb");
+})).then(
+    (val) => { console.log("val:", val) },
+    (err) => { console.log("err:", err) }
+);
+// Promise {<pending>}
+// err: bbb
+
+var original = Promise.resolve('xxxxx');
+var cast = Promise.resolve(original);
+cast.then(function(value) {
+    console.log('value: ' + value);
+});
+console.log('original === cast ? ' + (original === cast));
+// original === cast ? true
+// value: xxxxx
+
+
+////Promise静态方法 Promise.reject
+var p = Promise.reject("reject reason");
+p.then(
+        (v) => { console.log("v:", v) },
+        (e) => { console.log("e:", e) }
+    )
+    // e: reject reason
+    // Promise {<resolved>: undefined}
+
+
+//demo05
+//Promise静态方法 Promise.all
+const p1 = new Promise((resolve, reject) => {
+    resolve('hello');
+}).then(result => result);
+
+const p2 = new Promise((resolve, reject) => {
+    resolve('world'); //若都是resolve，则返回所有Promise对象成功时的传值
+    //reject("error!");//若有reject，则返回reject传的值->yy error!
+}).then(result => result);
+
+Promise.all([p1, p2]) //数组里若不是Promise对象的话，会调用resolve转成Promise对象
+    .then(result => console.log("xx", result))
+    .catch(e => console.log("yy", e));
+// xx (2) ["hello", "world"]
+// Promise {<resolved>: undefined}
+
+
+//Promise静态方法 Promise.race
+var p1 = new Promise((resolve, reject) => {
+    setTimeout(resolve, Math.random() * 5000, "aaa")
+});
+var p2 = new Promise((resolve, reject) => {
+    setTimeout(reject, Math.random() * 5000, "bbb")
+});
+var p3 = Promise.race([p1, p2]).then( //p1,p2谁速度快，就返回相应状态
+    (val) => { console.log("val:", val) },
+    (err) => { console.log("err:", err) }
+);
+//val: aaa->p1快
