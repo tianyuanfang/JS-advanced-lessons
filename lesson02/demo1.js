@@ -202,7 +202,7 @@ var str8 = "abcdef".split("c",2);
 
 console.log(str6,str7,str8);
 
->>>>>>["ab", "def"]   ["ab"] ?["ab", "def"]
+>>>>>>["ab", "def"]   ["ab"]    ["ab", "def"]
 
 charAt():通过索引返回对应的字符串,范围为(0-string.length-1);当索引值不在这个范围时，返回一个空字符串。
 eg:
