@@ -1,5 +1,5 @@
 //未看demo7部分、demo9
-console.log(typeof null);//undefined
+console.log(typeof null);//object
 console.log(typeof {name:"Mike",age:20});//object
 console.log(typeof function foo(){});//function
 
@@ -28,8 +28,8 @@ var obj_d = {x2:2,y2:3};
 console.log(obj_c.x1 === obj_d.x2);//true
 console.log(obj_c === obj_d);//false
 console.log({m:1}==={m:1});//false
-console.log(obj_c.x1 instanceof Number);//Number不是引用类型
-console.log(obj_d.x2 instanceof Number);//Number不是引用类型
+console.log(obj_c.x1 instanceof Number);//false,Number不是引用类型
+console.log(obj_d.x2 instanceof Number);//false,Number不是引用类型
 console.log(obj_c.x1 instanceof Object);//false
 console.log(obj_d.x2 instanceof Object);//false
 console.log(typeof obj_c.x1);//number

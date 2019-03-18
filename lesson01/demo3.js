@@ -84,10 +84,10 @@ console.log(str2);//abc
 
 //undefined与null 未确定的值、空引用
 
-//typeof 与 instance
+//typeof 与 instanceof
 //typeof 常用于检测基本类型的变量
-//instance 常用于检测引用类型的变量 
-//instance左侧期望是一个对象，右侧期望是一个类型
+//instanceof 常用于检测引用类型的变量 
+//instanceof左侧期望是一个对象，右侧期望是一个类型
 console.log({}instanceof Object);//true
 console.log([]instanceof Object);//true
 console.log([]instanceof Array);//true
@@ -254,7 +254,8 @@ var unshiftReturn = arr5.unshift(0);
 console.log(unshiftReturn);//unshift后数组的长度->4
 console.log(arr5);//[0,2,3,4]
 
-var joinReturn1 = arr6.join();
+var arr6=['ab','cd','ef'];
+var joinReturn1 = arr6.join();//将数组变为字符串；','是默认分隔符
 console.log(joinReturn1);//ab,cd,ef
 
 var arr7 = ["x","y","z"];
