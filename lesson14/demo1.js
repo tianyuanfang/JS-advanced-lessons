@@ -265,8 +265,8 @@ o3.y = "yyy";
 Object.defineProperty(o3,"x",
     {configurable:true,enumerable:false,writable:true,value:"xxx"}
 );
-console.log(Object.keys(o3));//不包含可枚举属性的键->["y"]
-console.log(Object.getOwnPropertyNames(o3));//包含可枚举的键->["y","x"]
+console.log(Object.keys(o3));//不包含不可枚举属性的键->["y"]
+console.log(Object.getOwnPropertyNames(o3));//包含不可枚举的键->["y","x"]
 
 console.log(o3.hasOwnProperty("x"),o3.hasOwnProperty("y"));//true true
 console.log(o3.propertyIsEnumerable("x"));//false
