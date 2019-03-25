@@ -4,7 +4,7 @@ var url = require("url");
 
 http.createServer(function(req, res) {
     var getDataObj = url.parse(req.url, true).query; //parse第二参数决定了是否转成对象
-    //console.log(getDataObj);
+    console.log(getDataObj);
     var arrayIndex = getDataObj.id - 1;
     //console.log(typeof arrayIndex,arrayIndex);
     fs.readFile("./nodeAjaxjQuery.json", function readData(err, data) {

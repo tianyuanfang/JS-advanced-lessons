@@ -165,7 +165,7 @@ p.then(function(v1) {
             // rejected("55");
             setTimeout(() => {
                 rejected("55");
-            }, 2000, );
+            }, 2000 );
         });
     })
     .then(function(v2) {
